@@ -40,7 +40,7 @@ def make_move():
     y = int(input_y)
     result, winner, winning_cells = game.make_move(x, y)  # Include winning_cells in the response
     if result == 'success':
-        printGrid(game.board)
+        print_grid(game.board)
     if result == 'win':
         print(f"Congratulations Player {game.current_player} won!")
         game_in_progress = False
