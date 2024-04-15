@@ -1,16 +1,17 @@
-from flask import Flask, render_template, request, jsonify
 from game import TicTacToe
 import json
 
-app = Flask(__name__)
 
 # Function to read game initialization data from game-init.json
 def read_game_init():
+    global game_init_data
     with open('game-init.json', 'r') as file:
         game_init_data = json.load(file)
     return game_init_data
 
+
 # Read game initialization data
+game_in_progress = True
 game_init_data = read_game_init()
 num_players = game_init_data['num_players']
 player_names = game_init_data['player_names']
@@ -18,21 +19,35 @@ grid_size = game_init_data['grid_size']
 player_symbols = game_init_data.get('player_symbols', None)  # Get player symbols from game-init.json, if available
 game = TicTacToe(num_players, player_names, grid_size, player_symbols)  # Initialize the game with player symbols
 
-@app.route('/')
-def index():
-    return render_template('index.html', grid_size=grid_size, current_player=game.current_player, player_symbols=game.player_symbols)
 
-@app.route('/make_move', methods=['POST'])
+# @app.route('/')
+# def index():
+#     return render_template('index.html', grid_size=grid_size, current_player=game.current_player,
+#                            player_symbols=game.player_symbols)
+
+
+def print_grid(grid):
+    for row in grid:
+        print(row)
+
+
 def make_move():
-    global game
-    if not game:
-        return jsonify({'error': 'Game has not been initialized.'}), 500
+    global game, game_in_progress
 
-    data = request.json
-    row = data['row']
-    col = data['col']
-    result, winner, winning_cells = game.make_move(row, col)  # Include winning_cells in the response
-    return jsonify({'result': result, 'winner': winner, 'winning_cells': winning_cells, 'current_player': game.current_player})
+    input_x = input("row: ")
+    input_y = input("col: ")
+    x = int(input_x)
+    y = int(input_y)
+    result, winner, winning_cells = game.make_move(x, y)  # Include winning_cells in the response
+    if result == 'success':
+        printGrid(game.board)
+    if result == 'win':
+        print(f"Congratulations Player {game.current_player} won!")
+        game_in_progress = False
+    if result == 'draw':
+        print(f"Congratulations Its draw!")
+        game_in_progress = False
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+while game_in_progress:
+    make_move()

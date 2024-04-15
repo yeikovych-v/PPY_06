@@ -1,4 +1,3 @@
-
 import json
 import pytest
 from game import TicTacToe
@@ -11,6 +10,7 @@ def test_correct_num_players():
     game = TicTacToe(num_players, player_names, grid_size)
     assert game.num_players == num_players
 
+
 # Test for checking incorrect number of players
 def test_incorrect_num_players():
     num_players = 1  # Incorrect number of players (less than 2)
@@ -18,6 +18,7 @@ def test_incorrect_num_players():
     grid_size = 5
     with pytest.raises(ValueError):
         TicTacToe(num_players, player_names, grid_size)
+
 
 # Test for checking correct size of the game board
 def test_correct_grid_size():
@@ -28,6 +29,7 @@ def test_correct_grid_size():
     assert len(game.board) == grid_size
     assert len(game.board[0]) == grid_size
 
+
 # Test for checking incorrect size of the game board
 def test_incorrect_grid_size():
     num_players = 2
@@ -35,6 +37,7 @@ def test_incorrect_grid_size():
     grid_size = 3  # Incorrect size of the game board (less than 5)
     with pytest.raises(ValueError):
         TicTacToe(num_players, player_names, grid_size)
+
 
 # Test for checking correct syntax of the game-init.json file
 def test_correct_game_init_json():
@@ -52,6 +55,7 @@ def test_correct_game_init_json():
 
     # Additional checks can be added as needed
 
+
 # Test for checking correct initialization of player symbols
 def test_correct_player_symbols_initialization():
     num_players = 2
@@ -61,6 +65,7 @@ def test_correct_player_symbols_initialization():
     game = TicTacToe(num_players, player_names, grid_size, player_symbols)
     assert game.player_symbols == player_symbols
 
+
 # Test for checking default initialization of player symbols
 def test_default_player_symbols_initialization():
     num_players = 2
@@ -69,6 +74,7 @@ def test_default_player_symbols_initialization():
     game = TicTacToe(num_players, player_names, grid_size)
     assert all(symbol in game.symbols for symbol in game.player_symbols.values())
 
+
 # Test for checking correct symbol assignment to players
 def test_correct_symbol_assignment():
     num_players = 3
@@ -76,6 +82,7 @@ def test_correct_symbol_assignment():
     grid_size = 5
     game = TicTacToe(num_players, player_names, grid_size)
     assert len(set(game.player_symbols.values())) == num_players  # Each player should have a unique symbol
+
 
 # Test for checking player switch after making a move
 def test_player_switch_after_move():
@@ -86,6 +93,7 @@ def test_player_switch_after_move():
     current_player = game.current_player
     game.make_move(0, 0)  # Make a move
     assert game.current_player != current_player  # Player should switch after making a move
+
 
 # Test for checking correct decrement of moves left after each move
 def test_moves_left_decrement():
